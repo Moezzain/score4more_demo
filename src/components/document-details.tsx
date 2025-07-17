@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { useAppSelector } from '@/store/hooks';
+import { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getDocumentDetailsByPage } from '@/store/slices/documentsSlice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
@@ -14,12 +15,23 @@ import {
 } from 'lucide-react';
 
 export function DocumentDetails() {
-  const { currentDocument, currentDocumentDetails, loading } = useAppSelector(
+  const dispatch = useAppDispatch();
+  const { currentDocument, currentDocumentDetails } = useAppSelector(
     (state) => state.documents
   );
 
   const [currentSection, setCurrentSection] = useState<'headers' | 'body' | 'content'>('headers');
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Fetch document details when page changes
+  useEffect(() => {
+    if (currentDocument) {
+      dispatch(getDocumentDetailsByPage({ 
+        documentId: currentDocument.id, 
+        page: currentPage 
+      }));
+    }
+  }, [currentDocument, currentPage, dispatch]);
 
   if (!currentDocument || !currentDocumentDetails) {
     return null;
@@ -50,10 +62,13 @@ export function DocumentDetails() {
 
   const handleSectionChange = (section: 'headers' | 'body' | 'content') => {
     setCurrentSection(section);
-    setCurrentPage(1);
   };
 
   const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleDocumentPageChange = (page: number) => {
     setCurrentPage(page);
   };
 
@@ -124,6 +139,34 @@ export function DocumentDetails() {
             {list.doc_link}
             <ExternalLink className="w-3 h-3" />
           </a>
+        </div>
+
+        {/* Document Page Navigation */}
+        <div className="flex items-center justify-between">
+          <h4 className="font-medium">Document Pages</h4>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              Page {paging.current_page} of {paging.total_pages}
+            </span>
+            <div className="flex gap-1">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDocumentPageChange(paging.current_page - 1)}
+                disabled={paging.current_page <= 1}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDocumentPageChange(paging.current_page + 1)}
+                disabled={paging.current_page >= paging.total_pages}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Section Navigation */}

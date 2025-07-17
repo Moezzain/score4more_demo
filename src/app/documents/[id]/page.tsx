@@ -42,7 +42,7 @@ export default function DocumentDetailsPage() {
         await new Promise(resolve => setTimeout(resolve, 500));
         
         const doc = getDocumentById(documentId);
-        const details = getDocumentDetailsById(documentId);
+        const details = getDocumentDetailsById(documentId, currentPage);
         
         if (!doc) {
           setError('Document not found');
@@ -51,7 +51,7 @@ export default function DocumentDetailsPage() {
         
         setDocument(doc);
         setDocumentDetails(details || null);
-      } catch (err) {
+      } catch {
         setError('Failed to load document');
       } finally {
         setLoading(false);
@@ -61,7 +61,11 @@ export default function DocumentDetailsPage() {
     if (documentId) {
       loadDocument();
     }
-  }, [documentId]);
+  }, [documentId, currentPage]);
+
+  const handleDocumentPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   if (loading) {
     return (
@@ -117,7 +121,6 @@ export default function DocumentDetailsPage() {
 
   const handleSectionChange = (section: 'headers' | 'body' | 'content') => {
     setCurrentSection(section);
-    setCurrentPage(1);
   };
 
   const handlePageChange = (page: number) => {
@@ -221,6 +224,34 @@ export default function DocumentDetailsPage() {
                 </a>
               </div>
 
+              {/* Document Page Navigation */}
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium">Document Pages</h4>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Page {documentDetails.list.paging.current_page} of {documentDetails.list.paging.total_pages}
+                  </span>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDocumentPageChange(documentDetails.list.paging.current_page - 1)}
+                      disabled={documentDetails.list.paging.current_page <= 1}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDocumentPageChange(documentDetails.list.paging.current_page + 1)}
+                      disabled={documentDetails.list.paging.current_page >= documentDetails.list.paging.total_pages}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
               {/* Section Navigation */}
               <div className="flex gap-2">
                 {(['headers', 'body', 'content'] as const).map((section) => (
@@ -309,7 +340,7 @@ export default function DocumentDetailsPage() {
               <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-medium mb-2">No Details Available</h3>
               <p className="text-muted-foreground">
-                This document hasn't been parsed yet or doesn't have detailed content available.
+                This document hasn&apos;t been parsed yet or doesn&apos;t have detailed content available.
               </p>
             </CardContent>
           </Card>

@@ -61,6 +61,22 @@ export const getDocumentDetails = createAsyncThunk(
   }
 );
 
+export const getDocumentDetailsByPage = createAsyncThunk(
+  'documents/getDocumentDetailsByPage',
+  async ({ documentId, page }: { documentId: string; page: number }) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const document = getDocumentById(documentId);
+    const details = getDocumentDetailsById(documentId, page);
+    
+    if (!document) {
+      throw new Error('Document not found');
+    }
+    
+    return { document, details: details || null };
+  }
+);
+
 export const uploadDocument = createAsyncThunk(
   'documents/uploadDocument',
   async (file: File) => {
@@ -147,6 +163,22 @@ const documentsSlice = createSlice({
         state.currentDocumentDetails = action.payload.details;
       })
       .addCase(getDocumentDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch document details';
+      });
+
+    // getDocumentDetailsByPage
+    builder
+      .addCase(getDocumentDetailsByPage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getDocumentDetailsByPage.fulfilled, (state, action: PayloadAction<{ document: Document; details: DocumentDetails | null }>) => {
+        state.loading = false;
+        state.currentDocument = action.payload.document;
+        state.currentDocumentDetails = action.payload.details;
+      })
+      .addCase(getDocumentDetailsByPage.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch document details';
       });

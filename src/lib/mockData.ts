@@ -84,36 +84,75 @@ export const mockDocuments: Document[] = [
   }
 ];
 
-// Mock document details data
+// Helper function to generate page content
+const generatePageContent = (pageNumber: number, documentType: string) => {
+  const baseContent = {
+    headers: [
+      { type: 'h1', content: `${documentType} - Page ${pageNumber}` },
+      { type: 'h2', content: `Section ${pageNumber} Overview` },
+      { type: 'h3', content: `Key Points - Page ${pageNumber}` }
+    ],
+    body: [
+      { type: 'body', content: `This is the main content for page ${pageNumber} of the ${documentType}. It contains detailed information about the topics covered in this section.` },
+      { type: 'body', content: `Page ${pageNumber} focuses on specific aspects and provides comprehensive analysis of the subject matter.` },
+      { type: 'body', content: `The content on this page is structured to provide clear understanding and actionable insights.` }
+    ],
+    content: [
+      { type: 'text', content: `Page ${pageNumber} highlights:` },
+      { type: 'text', content: `• Important findings from section ${pageNumber}` },
+      { type: 'text', content: `• Key metrics and data points` },
+      { type: 'text', content: `• Recommendations for page ${pageNumber}` },
+      { type: 'text', content: `• Next steps and action items` }
+    ]
+  };
+
+  // Add page-specific content
+  if (pageNumber === 1) {
+    baseContent.headers[0].content = `${documentType} - Executive Summary`;
+    baseContent.body[0].content = `This is the executive summary page of the ${documentType}. It provides an overview of all key findings and recommendations.`;
+  } else if (pageNumber === 2) {
+    baseContent.headers[0].content = `${documentType} - Methodology`;
+    baseContent.body[0].content = `This page describes the methodology used in the ${documentType}. It explains the research approach and data collection methods.`;
+  } else if (pageNumber === 3) {
+    baseContent.headers[0].content = `${documentType} - Results & Analysis`;
+    baseContent.body[0].content = `This page presents the main results and analysis from the ${documentType}. It includes detailed findings and interpretations.`;
+  }
+
+  return baseContent;
+};
+
+// Mock document details data with pagination
 export const mockDocumentDetails: Record<string, DocumentDetails> = {
   '1': {
     list: {
       doc_link: 'https://example.com/sustainability-report-2024.pdf',
       metadata: {
         headers: [
-          { type: 'h1', content: 'Sustainability Report 2024' },
-          { type: 'h2', content: 'Executive Summary' },
-          { type: 'h2', content: 'Environmental Impact' },
-          { type: 'h3', content: 'Carbon Footprint Reduction' },
-          { type: 'h3', content: 'Renewable Energy Initiatives' }
+          ...generatePageContent(1, 'Sustainability Report 2024').headers,
+          ...generatePageContent(2, 'Sustainability Report 2024').headers,
+          ...generatePageContent(3, 'Sustainability Report 2024').headers,
+          ...generatePageContent(4, 'Sustainability Report 2024').headers,
+          ...generatePageContent(5, 'Sustainability Report 2024').headers
         ],
         body: [
-          { type: 'body', content: 'This comprehensive report covers our environmental initiatives, carbon footprint reduction strategies, and future sustainability goals.' },
-          { type: 'body', content: 'We have successfully reduced our carbon emissions by 25% compared to last year through various initiatives including renewable energy adoption and process optimization.' },
-          { type: 'body', content: 'Our commitment to sustainability extends beyond environmental impact to include social responsibility and governance practices.' }
+          ...generatePageContent(1, 'Sustainability Report 2024').body,
+          ...generatePageContent(2, 'Sustainability Report 2024').body,
+          ...generatePageContent(3, 'Sustainability Report 2024').body,
+          ...generatePageContent(4, 'Sustainability Report 2024').body,
+          ...generatePageContent(5, 'Sustainability Report 2024').body
         ],
         content: [
-          { type: 'text', content: 'Key achievements in 2024 include:' },
-          { type: 'text', content: '• 25% reduction in carbon emissions' },
-          { type: 'text', content: '• 40% increase in renewable energy usage' },
-          { type: 'text', content: '• Zero waste to landfill achievement' },
-          { type: 'text', content: '• 100% sustainable packaging materials' }
+          ...generatePageContent(1, 'Sustainability Report 2024').content,
+          ...generatePageContent(2, 'Sustainability Report 2024').content,
+          ...generatePageContent(3, 'Sustainability Report 2024').content,
+          ...generatePageContent(4, 'Sustainability Report 2024').content,
+          ...generatePageContent(5, 'Sustainability Report 2024').content
         ]
       },
       paging: {
         current_page: 1,
-        page_size: 10,
-        total_pages: 3
+        page_size: 5,
+        total_pages: 5
       }
     }
   },
@@ -122,24 +161,114 @@ export const mockDocumentDetails: Record<string, DocumentDetails> = {
       doc_link: 'https://example.com/green-energy-plan.docx',
       metadata: {
         headers: [
-          { type: 'h1', content: 'Green Energy Implementation Plan' },
-          { type: 'h2', content: 'Solar Panel Installation' },
-          { type: 'h2', content: 'Wind Energy Partnerships' }
+          ...generatePageContent(1, 'Green Energy Implementation Plan').headers,
+          ...generatePageContent(2, 'Green Energy Implementation Plan').headers,
+          ...generatePageContent(3, 'Green Energy Implementation Plan').headers
         ],
         body: [
-          { type: 'body', content: 'Detailed plan for transitioning to renewable energy sources across all our facilities.' },
-          { type: 'body', content: 'The plan includes solar panel installation, wind energy partnerships, and energy storage solutions.' }
+          ...generatePageContent(1, 'Green Energy Implementation Plan').body,
+          ...generatePageContent(2, 'Green Energy Implementation Plan').body,
+          ...generatePageContent(3, 'Green Energy Implementation Plan').body
         ],
         content: [
-          { type: 'text', content: 'Implementation phases:' },
-          { type: 'text', content: '• Phase 1: Solar panel installation (6 months)' },
-          { type: 'text', content: '• Phase 2: Wind energy partnerships (12 months)' },
-          { type: 'text', content: '• Phase 3: Energy storage systems (18 months)' }
+          ...generatePageContent(1, 'Green Energy Implementation Plan').content,
+          ...generatePageContent(2, 'Green Energy Implementation Plan').content,
+          ...generatePageContent(3, 'Green Energy Implementation Plan').content
         ]
       },
       paging: {
         current_page: 1,
-        page_size: 10,
+        page_size: 5,
+        total_pages: 3
+      }
+    }
+  },
+  '3': {
+    list: {
+      doc_link: 'https://example.com/waste-management-strategy.pdf',
+      metadata: {
+        headers: [
+          ...generatePageContent(1, 'Waste Management Strategy').headers,
+          ...generatePageContent(2, 'Waste Management Strategy').headers,
+          ...generatePageContent(3, 'Waste Management Strategy').headers,
+          ...generatePageContent(4, 'Waste Management Strategy').headers
+        ],
+        body: [
+          ...generatePageContent(1, 'Waste Management Strategy').body,
+          ...generatePageContent(2, 'Waste Management Strategy').body,
+          ...generatePageContent(3, 'Waste Management Strategy').body,
+          ...generatePageContent(4, 'Waste Management Strategy').body
+        ],
+        content: [
+          ...generatePageContent(1, 'Waste Management Strategy').content,
+          ...generatePageContent(2, 'Waste Management Strategy').content,
+          ...generatePageContent(3, 'Waste Management Strategy').content,
+          ...generatePageContent(4, 'Waste Management Strategy').content
+        ]
+      },
+      paging: {
+        current_page: 1,
+        page_size: 5,
+        total_pages: 4
+      }
+    }
+  },
+  '4': {
+    list: {
+      doc_link: 'https://example.com/carbon-neutrality-roadmap.pptx',
+      metadata: {
+        headers: [
+          ...generatePageContent(1, 'Carbon Neutrality Roadmap').headers,
+          ...generatePageContent(2, 'Carbon Neutrality Roadmap').headers,
+          ...generatePageContent(3, 'Carbon Neutrality Roadmap').headers,
+          ...generatePageContent(4, 'Carbon Neutrality Roadmap').headers,
+          ...generatePageContent(5, 'Carbon Neutrality Roadmap').headers,
+          ...generatePageContent(6, 'Carbon Neutrality Roadmap').headers
+        ],
+        body: [
+          ...generatePageContent(1, 'Carbon Neutrality Roadmap').body,
+          ...generatePageContent(2, 'Carbon Neutrality Roadmap').body,
+          ...generatePageContent(3, 'Carbon Neutrality Roadmap').body,
+          ...generatePageContent(4, 'Carbon Neutrality Roadmap').body,
+          ...generatePageContent(5, 'Carbon Neutrality Roadmap').body,
+          ...generatePageContent(6, 'Carbon Neutrality Roadmap').body
+        ],
+        content: [
+          ...generatePageContent(1, 'Carbon Neutrality Roadmap').content,
+          ...generatePageContent(2, 'Carbon Neutrality Roadmap').content,
+          ...generatePageContent(3, 'Carbon Neutrality Roadmap').content,
+          ...generatePageContent(4, 'Carbon Neutrality Roadmap').content,
+          ...generatePageContent(5, 'Carbon Neutrality Roadmap').content,
+          ...generatePageContent(6, 'Carbon Neutrality Roadmap').content
+        ]
+      },
+      paging: {
+        current_page: 1,
+        page_size: 5,
+        total_pages: 6
+      }
+    }
+  },
+  '5': {
+    list: {
+      doc_link: 'https://example.com/esg-performance-metrics.xlsx',
+      metadata: {
+        headers: [
+          ...generatePageContent(1, 'ESG Performance Metrics').headers,
+          ...generatePageContent(2, 'ESG Performance Metrics').headers
+        ],
+        body: [
+          ...generatePageContent(1, 'ESG Performance Metrics').body,
+          ...generatePageContent(2, 'ESG Performance Metrics').body
+        ],
+        content: [
+          ...generatePageContent(1, 'ESG Performance Metrics').content,
+          ...generatePageContent(2, 'ESG Performance Metrics').content
+        ]
+      },
+      paging: {
+        current_page: 1,
+        page_size: 5,
         total_pages: 2
       }
     }
@@ -166,9 +295,24 @@ export const getDocumentById = (id: string): Document | undefined => {
   return mockDocuments.find(doc => doc.id === id);
 };
 
-// Helper function to get document details by ID
-export const getDocumentDetailsById = (id: string): DocumentDetails | undefined => {
-  return mockDocumentDetails[id];
+// Helper function to get document details by ID with page support
+export const getDocumentDetailsById = (id: string, page: number = 1): DocumentDetails | undefined => {
+  const details = mockDocumentDetails[id];
+  if (!details) return undefined;
+
+  // Clone the details and update the current page
+  const updatedDetails = {
+    ...details,
+    list: {
+      ...details.list,
+      paging: {
+        ...details.list.paging,
+        current_page: page
+      }
+    }
+  };
+
+  return updatedDetails;
 };
 
 // Helper function to create a new document

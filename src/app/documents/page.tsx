@@ -10,7 +10,6 @@ import {
   FileText, 
   FileSpreadsheet, 
   Presentation, 
-  FileCode, 
   Calendar, 
   HardDrive, 
   Eye,

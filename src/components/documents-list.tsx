@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getDocumentsList, getDocumentDetails } from '@/store/slices/documentsSlice';
+import { getDocumentsList, getDocumentDetailsByPage } from '@/store/slices/documentsSlice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -17,7 +17,7 @@ export function DocumentsList() {
   }, [dispatch]);
 
   const handleGetDocumentDetails = (documentId: string) => {
-    dispatch(getDocumentDetails(documentId));
+    dispatch(getDocumentDetailsByPage({ documentId, page: 1 }));
   };
 
   const handleLoadNextPage = () => {
