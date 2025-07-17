@@ -90,6 +90,7 @@ interface DocumentsState {
   currentDocument: Document | null;
   currentDocumentDetails: DocumentDetails | null;
   loading: boolean;
+  paginationLoading: boolean;
   uploadLoading: boolean;
   error: string | null;
   pagination: {
@@ -106,6 +107,7 @@ const initialState: DocumentsState = {
   currentDocument: null,
   currentDocumentDetails: null,
   loading: false,
+  paginationLoading: false,
   uploadLoading: false,
   error: null,
   pagination: {
@@ -133,11 +135,11 @@ const documentsSlice = createSlice({
     // getDocumentsList
     builder
       .addCase(getDocumentsList.pending, (state) => {
-        state.loading = true;
+        state.paginationLoading = true;
         state.error = null;
       })
       .addCase(getDocumentsList.fulfilled, (state, action: PayloadAction<DocumentsListResponse>) => {
-        state.loading = false;
+        state.paginationLoading = false;
         state.documents = action.payload.documents;
         state.pagination = {
           total: action.payload.total,
@@ -147,7 +149,7 @@ const documentsSlice = createSlice({
         };
       })
       .addCase(getDocumentsList.rejected, (state, action) => {
-        state.loading = false;
+        state.paginationLoading = false;
         state.error = action.error.message || 'Failed to fetch documents';
       });
 

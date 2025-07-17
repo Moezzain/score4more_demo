@@ -81,6 +81,46 @@ export const mockDocuments: Document[] = [
     status: 'parsed',
     fileSize: '5.2 MB',
     fileType: 'pdf'
+  },
+  {
+    id: '11',
+    title: 'Renewable Energy Policy Framework.pdf',
+    uploadedAt: '2023-12-01T10:00:00Z',
+    status: 'parsed',
+    fileSize: '3.8 MB',
+    fileType: 'pdf'
+  },
+  {
+    id: '12',
+    title: 'Environmental Compliance Report.docx',
+    uploadedAt: '2023-11-28T14:30:00Z',
+    status: 'parsing',
+    fileSize: '2.1 MB',
+    fileType: 'docx'
+  },
+  {
+    id: '13',
+    title: 'Green Building Standards.pptx',
+    uploadedAt: '2023-11-25T09:15:00Z',
+    status: 'parsed',
+    fileSize: '4.5 MB',
+    fileType: 'pptx'
+  },
+  {
+    id: '14',
+    title: 'Carbon Footprint Analysis.xlsx',
+    uploadedAt: '2023-11-20T16:45:00Z',
+    status: 'waiting_queue',
+    fileSize: '1.9 MB',
+    fileType: 'xlsx'
+  },
+  {
+    id: '15',
+    title: 'Sustainable Development Goals Report.pdf',
+    uploadedAt: '2023-11-15T11:20:00Z',
+    status: 'parsed',
+    fileSize: '6.1 MB',
+    fileType: 'pdf'
   }
 ];
 
